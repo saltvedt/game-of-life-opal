@@ -4,10 +4,19 @@
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="http://saltvedt.net/style.css">
   </head>
   <body>
-    <button id="start_stop">Start/Stop</button>
+    <div style="width: 50%; margin-left: auto; margin-right: auto; font-size: 0.6em">
+      <h2>Game of Life in Opal</h2>
+
+      <p>
+        This is an implementation of Game of Life in Opal (a Ruby to Javascript transpiler), loosely based on <a href="https://www.sitepoint.com/opal-ruby-browser-game-life/">this Sitepoint tutorial.</a>
+
+        The source code is <a href="https://github.com/saltvedt/game-of-life-opal">available on Github</a>.
+      </p>
+      <button id="start_stop">Start/Stop</button>
+    </div>
     <div id="gridContainer" style="margin: auto; border: 1px solid black; width: 50%; height: 800px">
       <canvas id="gameCanvas"></canvas>
     </div>

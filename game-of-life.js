@@ -22258,7 +22258,7 @@ if (cell == null) cell = nil;if (y == null) y = nil;
 
       x = $rb_times(x, $scope.get('CELL_WIDTH'));
       y = $rb_times(y, $scope.get('CELL_HEIGHT'));
-      self.$context().fillStyle = "#000";
+      self.$context().fillStyle = "#fff";
       return self.$context().fillRect($rb_plus(x.$floor(), 1), $rb_plus(y.$floor(), 1), $rb_minus($scope.get('CELL_WIDTH'), 1), $rb_minus($scope.get('CELL_HEIGHT'), 1));
     });
 
@@ -22473,7 +22473,6 @@ if (_ == null) _ = nil;if (y == null) y = nil;
     Opal.defn(self, '$population_at', function(x, y) {
       var self = this;
 
-      debugger;
       return $rb_plus($rb_plus($rb_plus($rb_plus($rb_plus($rb_plus($rb_plus(self.$get_state($rb_minus(x, 1), $rb_minus(y, 1)), self.$get_state($rb_minus(x, 1), y)), self.$get_state($rb_minus(x, 1), $rb_plus(y, 1))), self.$get_state(x, $rb_minus(y, 1))), self.$get_state(x, $rb_plus(y, 1))), self.$get_state($rb_plus(x, 1), $rb_minus(y, 1))), self.$get_state($rb_plus(x, 1), y)), self.$get_state($rb_plus(x, 1), $rb_plus(y, 1)));
     });
 
