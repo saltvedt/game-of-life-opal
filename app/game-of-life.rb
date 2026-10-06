@@ -13,12 +13,13 @@ class Game
     @state = blank_state
     grid.add_mouse_event_listener { |x, y, s| set_state(x, y, s) }
     add_button_event_listener
+    update_controls
   end
 
   def add_button_event_listener
-    Element.find("#start_stop").on :click do |event|
-      start_stop
-    end
+    Element.find("#start_stop").on(:click) { start_stop }
+    Element.find("#clear").on(:click) { clear }
+    Element.find("#step").on(:click) { step }
   end
 
   def start_stop
@@ -28,6 +29,37 @@ class Game
       @interval.stop
     else
       @interval.resume
+    end
+    update_controls
+  end
+
+  def running?
+    !@interval.nil? && @interval.running?
+  end
+
+  def update_controls
+    Element.find("#start_stop").text = running? ? 'Pause' : 'Start'
+    Element.find("#step").prop('disabled', running?)
+  end
+
+  def clear
+    @interval.stop unless @interval.nil?
+    self.state = blank_state
+    grid.redraw_canvas(state)
+    update_controls
+  end
+
+  def step
+    tick unless running?
+  end
+
+  def load_glider
+    return if grid.max_x < 3 || grid.max_y < 3
+
+    offset_x = (grid.max_x / 2).floor - 1
+    offset_y = (grid.max_y / 2).floor - 1
+    [[1, 0], [2, 1], [0, 2], [1, 2], [2, 2]].each do |x, y|
+      set_state(offset_x + x, offset_y + y, 1)
     end
   end
 
@@ -98,3 +130,5 @@ class Game
 end
 
 game = Game.new(Grid.new)
+game.load_glider
+game.start_stop

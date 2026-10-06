@@ -1,25 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Life in Opal - Saltvedt.net</title>
     <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300">
     <link rel="stylesheet" href="https://saltvedt.net/style.css">
+    <link rel="stylesheet" href="./style.css">
   </head>
-  <body>
-    <div style="width: 50%; margin-left: auto; margin-right: auto; font-size: 0.6em">
-      <h2>Game of Life in Opal</h2>
+  <body class="portfolio reading-page">
+    <main class="site-shell reading-shell">
+      <header class="article-header">
+        <h1>Game of Life in Opal</h1>
+      </header>
+      <div class="article-prose">
+        <p>
+          This is an implementation of Game of Life in Opal (a Ruby to Javascript transpiler), loosely based on <a href="https://www.sitepoint.com/opal-ruby-browser-game-life/">this Sitepoint tutorial.</a>
 
-      <p>
-        This is an implementation of Game of Life in Opal (a Ruby to Javascript transpiler), loosely based on <a href="https://www.sitepoint.com/opal-ruby-browser-game-life/">this Sitepoint tutorial.</a>
-
-        The source code is <a href="https://github.com/saltvedt/game-of-life-opal">available on Github</a>.
-      </p>
-      <button id="start_stop">Start/Stop</button>
-    </div>
-    <div id="gridContainer" style="margin: auto; border: 1px solid black; width: 50%">
-      <canvas id="gameCanvas" height="800" style="display: block; width: 100%; height: auto"></canvas>
-    </div>
+          The source code is <a href="https://github.com/saltvedt/game-of-life-opal">available on Github</a>.
+        </p>
+        <p>
+          <button id="start_stop" class="btn btn-default" type="button">Start</button>
+          <button id="step" class="btn btn-default" type="button">Step</button>
+          <button id="clear" class="btn btn-default" type="button">Clear</button>
+        </p>
+      </div>
+      <div id="gridContainer">
+        <canvas id="gameCanvas" height="800"></canvas>
+      </div>
+    </main>
     <%= javascript_include_tag 'game-of-life' %>
   </body>
 </html>
