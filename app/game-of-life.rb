@@ -11,6 +11,7 @@ class Game
   def initialize(grid)
     @grid  = grid
     @state = blank_state
+    grid.add_mouse_event_listener { |x, y, s| set_state(x, y, s) }
     add_button_event_listener
   end
 
@@ -22,7 +23,6 @@ class Game
 
   def start_stop
     if @interval.nil?
-      load_seed
       run
     elsif @interval.running?
       @interval.stop
@@ -40,14 +40,10 @@ class Game
   end
 
   def set_state(x, y, s)
-    state[x][y] = s
-  end
+    return unless x >= 0 && y >= 0 && x < grid.max_x && y < grid.max_y
 
-  def load_seed
-    grid.seed.each do |x, y|
-      set_state(x, y, 1)
-    end
-    grid.seed = []
+    state[x][y] = s
+    s == 1 ? grid.fill_cell(x, y) : grid.unfill_cell(x, y)
   end
 
   def run

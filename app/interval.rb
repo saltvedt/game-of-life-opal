@@ -1,10 +1,12 @@
 class Interval
-  def initialize(ticker, time = 0)
+  def initialize(ticker, time = 100)
     @time = time
     @ticker = ticker
   end
 
   def resume
+    return if running?
+
     @interval = `setInterval(function(){#{@ticker.call}}, #{@time})`
   end
   alias :start :resume

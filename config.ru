@@ -1,10 +1,9 @@
-require 'opal'
-require 'opal-jquery'
+require 'rack'
+require 'rake'
 
-server = Opal::Server.new do |server|
-  server.append_path 'app'
-  server.main = 'game-of-life'
-  server.index_path = 'index.erb'
-  server.debug = true
-end
-run server
+Rake.application.init
+Rake.application.load_rakefile
+Rake::Task[:build].invoke
+
+use Rack::Static, urls: ['/'], root: 'build', index: 'index.html'
+run ->(_env) { [404, { 'content-type' => 'text/plain' }, ['Not found']] }

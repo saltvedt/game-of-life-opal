@@ -17,4 +17,5 @@
 
 guard 'rake', :task => 'build' do
   watch %r{^app/.+\.rb$}
+  watch %r{^(index\.erb|style\.css|Rakefile)$}
 end

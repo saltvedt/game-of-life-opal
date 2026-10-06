@@ -4,21 +4,20 @@ class Coordinates < OpenStruct; end
 
 class Grid
   attr_reader :height, :width, :canvas, :context, :max_x, :max_y
-  attr_accessor :seed
 
   CELL_HEIGHT = 15;
   CELL_WIDTH  = 15;
 
   def initialize
-    @height  = `$("#gridContainer").height()`
-    @width   = `$("#gridContainer").width()`
-    @canvas  = `document.getElementById(#{canvas_id})` 
+    @canvas  = `document.getElementById(#{canvas_id})`
     @context = `#{canvas}.getContext('2d')`
-    @max_x   = (width / CELL_WIDTH).floor
-    @max_y   = (height / CELL_HEIGHT).floor
-    @seed    = []
+    @width   = `$("#gridContainer").width()`
+    @height  = `#{canvas}.height`
+    @max_x   = [((width - 1) / CELL_WIDTH).floor, 1].max
+    @max_y   = [((height - 1) / CELL_HEIGHT).floor, 1].max
+    @width   = max_x * CELL_WIDTH + 1
+    @height  = max_y * CELL_HEIGHT + 1
     draw_grid
-    add_mouse_event_listener
   end
 
   def draw_grid
@@ -39,7 +38,7 @@ class Grid
       y += CELL_HEIGHT
     end
 
-    `#{context}.strokeStyle = "#eee"`
+    `#{context}.strokeStyle = "#bbb"`
     `#{context}.stroke()`
   end
 
@@ -57,18 +56,10 @@ class Grid
   end
   
   def get_cursor_position(event)
-    if (event.page_x && event.page_y)
-      x = event.page_x;
-      y = event.page_y;
-    else
-      doc = Opal.Document[0]
-      x = event[:clientX] + doc.scrollLeft + doc.documentElement.scrollLeft;
-      y = event[:clientY] + doc.body.scrollTop + doc.documentElement.scrollTop;
-    end
+    bounds = `#{canvas}.getBoundingClientRect()`
+    x = (event[:clientX] - `#{bounds}.left`) * width / `#{bounds}.width`
+    y = (event[:clientY] - `#{bounds}.top`) * height / `#{bounds}.height`
 
-    x -= `#{canvas}.offsetLeft`
-    y -= `#{canvas}.offsetTop`
-   
     x = (x / CELL_WIDTH).floor
     y = (y / CELL_HEIGHT).floor
 
@@ -78,7 +69,7 @@ class Grid
   def fill_cell(x, y)
     x *= CELL_WIDTH;
     y *= CELL_HEIGHT;
-    `#{context}.fillStyle = "#000"`
+    `#{context}.fillStyle = "#fff"`
     `#{context}.fillRect(#{x.floor+1}, #{y.floor+1}, #{CELL_WIDTH-1}, #{CELL_HEIGHT-1})`
   end
 
@@ -93,18 +84,11 @@ class Grid
   end
 
   def add_mouse_event_listener
-    Element.find("##{canvas_id}").on :click do |event|
-      coords = get_cursor_position(event)
-      x, y   = coords.x, coords.y
-      fill_cell(x, y)
-      seed.push([x, y])
-    end
-
-    Element.find("##{canvas_id}").on :dblclick do |event|
-      coords = get_cursor_position(event)
-      x, y   = coords.x, coords.y
-      unfill_cell(x, y)
-      seed.delete([x, y])
+    { click: 1, dblclick: 0 }.each do |event_name, state|
+      Element.find("##{canvas_id}").on event_name do |event|
+        coords = get_cursor_position(event)
+        yield coords.x, coords.y, state
+      end
     end
   end
 end
